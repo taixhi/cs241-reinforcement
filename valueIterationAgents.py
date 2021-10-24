@@ -49,10 +49,7 @@ class ValueIterationAgent(ValueEstimationAgent):
                 a = self.computeActionFromValues(s)
                 val = self.computeQValueFromValues(s, a)
                 new_values[s] = val
-                if(s == 'TERMINAL_STATE'):
-                    print(s, a, val)
             self.values = new_values
-
 
     def getValue(self, state):
         """
@@ -86,7 +83,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         if self.mdp.isTerminal(state):
             return None
         else:
-            best = (None, 0)
+            best = (None, -696969696)
             for a in self.mdp.getPossibleActions(state):
                 val = self.computeQValueFromValues(state, a)
                 if best[1] <= val: # if greater than other actions
