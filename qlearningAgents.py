@@ -48,7 +48,7 @@ class QLearningAgent(ReinforcementAgent):
           Should return 0.0 if we have never seen a state
           or the Q node value otherwise
         """
-        if self.values.has_key((state,action)):
+        if self.values.has_key((state,action)): # if we've seen a state before return from q value dict
             return self.values[(state, action)]
         else:
             return 0.0
@@ -65,7 +65,7 @@ class QLearningAgent(ReinforcementAgent):
         if not len(legalActions):
             return 0.0
         best = (None, -6969696969699)
-        for action in legalActions:
+        for action in legalActions: # identify our best choice action and return value resulting from it
             v = self.getQValue(state, action)
             if best[1] < v:
                 best = (action, v)
@@ -81,7 +81,7 @@ class QLearningAgent(ReinforcementAgent):
         if not len(legalActions):
             return None
         best = (None, -6969696969699)
-        for action in legalActions:
+        for action in legalActions: # identify our best choice action and return it
             v = self.getQValue(state, action)
             if best[1] < v:
                 best = (action, v)
@@ -99,6 +99,8 @@ class QLearningAgent(ReinforcementAgent):
           HINT: To pick randomly from a list, use random.choice(list)
         """
         # Pick Action
+        # Factor in epsilon probability and have a chance of picking random choice
+        # Otherwise go with the soundest option
         legalActions = self.getLegalActions(state)
         action = None
         if not len(legalActions):
@@ -118,6 +120,7 @@ class QLearningAgent(ReinforcementAgent):
           NOTE: You should never call this function,
           it will be called on your behalf
         """
+        # update values
         old = self.values[(state, action)]
         next_util = self.values[(nextState,self.computeActionFromQValues(nextState))]
         self.values[(state, action)] = old + self.alpha*(reward + self.discount*next_util - old)
@@ -187,7 +190,7 @@ class ApproximateQAgent(PacmanQAgent):
         features = self.featExtractor.getFeatures(state, action)
         q = 0
         for key, value in features.items():
-            q += self.weights[key] * value
+            q += self.weights[key] * value # this is basically dot product
         return q
  
     def update(self, state, action, nextState, reward):
@@ -197,7 +200,7 @@ class ApproximateQAgent(PacmanQAgent):
         features = self.featExtractor.getFeatures(state, action)
         weights = self.weights[(state,action)]
         new = self.weights.copy()
-        for key, feature in features.items():
+        for key, feature in features.items(): # update weight using the corresponding feature as input
             difference = reward + self.discount*self.computeValueFromQValues(nextState) - self.getQValue(state,action)
             new[key] = self.weights[key] + self.alpha*difference*feature
         self.weights = new
