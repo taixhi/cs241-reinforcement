@@ -43,13 +43,13 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.iterations = iterations
         self.values = util.Counter() # A Counter is a dict with default 0
         # Write value iteration code here
-        for n in range(0, iterations):
-            new_values = self.values.copy()
-            for s in mdp.getStates():
-                a = self.computeActionFromValues(s)
-                val = self.computeQValueFromValues(s, a)
-                new_values[s] = val
-            self.values = new_values
+        for n in range(0, iterations): # value iterate n times
+            new_values = self.values.copy() # create a copy of the values for this batch
+            for s in mdp.getStates(): # iterate through the states
+                a = self.computeActionFromValues(s) # get the best action to take from the state
+                val = self.computeQValueFromValues(s, a) # get the Q value for the state action pair, using the best action. i.e. gets the new value aagter value iteration
+                new_values[s] = val # update
+            self.values = new_values # update table after batch
 
     def getValue(self, state):
         """
@@ -63,9 +63,9 @@ class ValueIterationAgent(ValueEstimationAgent):
           Compute the Q-value of action in state from the
           value function stored in self.values.
         """
-        if action == None:
+        if action == None: # if the action is None, return its old value (default=0, as action is always None)
             return self.values[state]
-        transitions = self.mdp.getTransitionStatesAndProbs(state, action)
+        transitions = self.mdp.getTransitionStatesAndProbs(state, action) # compute the transtitions array [(, prob)]
         q_val = 0
         for (new_state, prob) in transitions:
             q_val += (self.mdp.getReward(state, action, new_state) + self.discount*self.values[new_state])*prob
@@ -83,11 +83,11 @@ class ValueIterationAgent(ValueEstimationAgent):
         if self.mdp.isTerminal(state):
             return None
         else:
-            best = (None, -696969696)
-            for a in self.mdp.getPossibleActions(state):
+            best = (None, -696969696) # -inf for default values
+            for a in self.mdp.getPossibleActions(state): # iterate through possible actions for the state to find the largest q value
                 val = self.computeQValueFromValues(state, a)
                 if best[1] <= val: # if greater than other actions
-                    best = (a, val)
+                    best = (a, val) 
             return best[0]
 
 

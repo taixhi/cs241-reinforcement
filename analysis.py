@@ -60,10 +60,10 @@ def question3e():
     # If not possible, return 'NOT POSSIBLE'
 
 def question6():
-    answerEpsilon = 0.7
-    answerLearningRate = 0.7
+    answerEpsilon = 0
+    answerLearningRate = 0
     # return answerEpsilon, answerLearningRate
-    return 'NOT POSSIBLE'
+    return 'NOT POSSIBLE' # Regardless of epsilon or learning rate, there is not enough iterations to learn the correct behavior
     # If not possible, return 'NOT POSSIBLE'
 
 if __name__ == '__main__':
